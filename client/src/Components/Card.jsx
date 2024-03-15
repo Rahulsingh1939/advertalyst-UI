@@ -4,7 +4,7 @@ const Card = () => {
   return (
     <>
       <a
-        href="https://www.kindacode.com"
+        href="https://www.weatherapi.com/"
         className="flex flex-col bg-white drop-shadow hover:drop-shadow-lg hover:opacity-70 rounded-md"
       >
         <img

@@ -9,7 +9,7 @@ function App() {
       </div>
       {/* grid container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-x-10 gap-y-20 h-fit text-xl">
-        {/* product card */}
+        {/* product cards */}
         <Card />
         <Card />
         <Card />
