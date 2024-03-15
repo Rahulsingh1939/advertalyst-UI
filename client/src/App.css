@@ -4,3 +4,9 @@
   padding: 2rem;
   text-align: center;
 }
+
+
+@font-face {
+  font-family: 'SAMAN';
+  src: url('./fonts/SAMAN___.TTF');
+}
