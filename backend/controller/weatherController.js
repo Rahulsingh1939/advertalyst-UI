@@ -95,4 +95,12 @@ const cityController = async (req, res) => {
   }
 };
 
-module.exports = { weatherController, cityController };
+const cityUpdateController = async (req,res) =>{
+    
+}
+
+const deleteController = async (req,res) =>{
+
+}
+
+module.exports = { weatherController, cityController,cityUpdateController,deleteController };
