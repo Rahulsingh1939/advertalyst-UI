@@ -42,7 +42,7 @@ const Card = ({ city }) => {
           <img
             src={`https:${city?.query.current.condition.icon}`}
             alt="Weather"
-            className="h-16 w-16 m-14 mx-30 object-cover rounded-tl-md rounded-tr-md"
+            className="h-16 w-16 m-14 mx-32 object-cover rounded-tl-md rounded-tr-md"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.0);",
               zIndex: "2",
