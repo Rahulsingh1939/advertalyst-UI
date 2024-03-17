@@ -5,11 +5,11 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const ejs = require('ejs')
 
-const app = express()
+const app = express();
 
 
 const dotenv = require('dotenv')
-dotenv.config()
+dotenv.config();
 const connectDB = require('./config/db')
 connectDB();
 
@@ -18,8 +18,9 @@ const PORT = process.env.PORT || 3000
 const MONGODB_URL = process.env.MONGODB_URL
 
 
-//
+//Routes Import
 const healthRoute = require('./routes/healthRoute')
+const weatherRoute = require('./routes/weatherRoute')
 
 //Global MiddleWares
 app.use(bodyparser.urlencoded({extended:true}))
@@ -36,7 +37,7 @@ app.get('/',(req,res)=>{
 })
 
 // ROUTES
-// app.use('/api/v1',)
+app.use('/api/v1/weather',weatherRoute)
 app.use('/api/health',healthRoute)
 
 
