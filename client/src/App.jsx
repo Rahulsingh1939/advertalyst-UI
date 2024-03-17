@@ -56,13 +56,14 @@ function App() {
       </div>
       {/* grid container */}
       {loading ? (
-        "Loading ..."
+        <div
+        className="text-2xl font-bold from-stone-900 ">Loading ...</div>
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-x-10 gap-y-20 h-fit text-xl">
             {/* product cards */}
             {weather.map((city,index)=>
-              (<Card key={index} city={city} />)
+              (<Card key={index} city={city}/>)
             )
             }
           </div>

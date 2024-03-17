@@ -17,6 +17,7 @@
   background-image: linear-gradient(to right, #ff0000, #12a2e5); /* Your gradient colors */
   -webkit-background-clip: text; /* Apply the gradient as a text color */
   background-clip: text;
+  background-repeat: no-repeat;
   color: transparent;
   display: inline-block;
 }

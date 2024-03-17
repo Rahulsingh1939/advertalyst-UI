@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Card = ({ city }) => {
   const [img, setImg] = useState([]);
@@ -18,9 +20,10 @@ const Card = ({ city }) => {
       }
     };
     getImg();
+    AOS.init();
   }, []);
   return (
-    <>
+    <div data-aos="flip-left">
       <a
         href=""
         className="flex flex-col bg-white drop-shadow hover:drop-shadow-lg hover:opacity-70 rounded-md"
@@ -63,7 +66,7 @@ const Card = ({ city }) => {
           <p className="text-sm">{city?.query.location.country}</p>
         </div>
       </a>
-    </>
+    </div>
   );
 };
 
