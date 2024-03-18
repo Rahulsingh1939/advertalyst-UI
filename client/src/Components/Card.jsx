@@ -10,7 +10,7 @@ const Card = ({ city }) => {
       try {
         const { data } = await axios.get(
           `https://api.unsplash.com/search/photos?page=1&per_page=1&query=${
-            city?.query.q
+            city?.name
           }&client_id=${import.meta.env.VITE_CLIENT_ID}`
         );
         setImg(data?.results[0].urls?.regular);
@@ -39,7 +39,7 @@ const Card = ({ city }) => {
         >
           <div className="background-overlay"></div>
           <img
-            src={`https:${city?.query.current.condition.icon}`}
+            src={`https:${city?.icon_url}`}
             alt="Weather"
             className="h-16 w-16 m-14 mx-32 object-cover rounded-tl-md rounded-tr-md"
             style={{
@@ -51,15 +51,15 @@ const Card = ({ city }) => {
             }}
           />
           <p className="lg:text-4xl text-5xl font-sans font-semibold text-gray-100 flex items-center ">
-            {Math.round(city?.query.current.temp_c)}{" "}
+            {Math.round(city?.temperature)}{" "}
             <sup className="lg:text-2xl text-2xl">o </sup>
             <span className="lg:text-4xl text-4xl"> C</span>
           </p>
         </div>
-        <div className="inline">{city?.query.current.condition.text}</div>
+        <div className="inline">{city?.condition}</div>
         <div className="px-3 pb-2">
-          <h1 className=" text-2xl font-semibold">{city?.query.q},</h1>
-          <p className="text-sm">{city?.query.location.country}</p>
+          <h1 className=" text-2xl font-semibold">{city?.name},</h1>
+          <p className="text-sm">{city?.country}</p>
         </div>
       </a>
     </div>

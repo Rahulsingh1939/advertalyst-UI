@@ -10,54 +10,42 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [uuid, setUUID] = useState(localStorage.getItem("uuid") || "");
   const [jwt, setJWT] = useState("");
-  const cities = {
-    locations: [
-      {
-        q: "London",
-      },
-      {
-        q: "Mumbai",
-      },
-      {
-        q: "Bangalore",
-      },
-      {
-        q: "Paris",
-      },
-    ],
-  };
-
-  useEffect(() => {
-    const getWeather = async () => {
-      try {
-        setLoading(true);
-        const { data } = await axios.post(
-          `http://api.weatherapi.com/v1/current.json?key=${
-            import.meta.env.VITE_WEATHER_API
-          }&q=bulk`,
-          cities
+  const getWeather = async () => {
+    try {
+      setLoading(true);
+      if (jwt) {
+        const { data } = await axios.get(
+          `http://localhost:3000/api/v1/weather`,
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
         );
-        setWeather(data.bulk);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
+        setWeather(data?.CitiesDetails);
         setLoading(false);
       }
-    };
-    getWeather();
-    //eslint-disable-next-line
-  }, []);
-
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     if (!uuid) {
       const generatedUUID = uuidv4();
       setUUID(generatedUUID);
       localStorage.setItem("uuid", generatedUUID);
     }
-    fetchJWT();
 
-    authRequest();
-  }, [uuid]);
+    const fetchJWTAndWeather = async () => {
+      await fetchJWT();
+      getWeather();
+    };
+    fetchJWTAndWeather();
+  }, []);
+  useEffect(() => {
+    getWeather();
+  }, [jwt]);
 
   const fetchJWT = async () => {
     try {
@@ -76,19 +64,6 @@ function App() {
     }
   };
 
-  const authRequest = async () => {
-    axios.get('http://localhost:3000/api/v1/auth/', {
-      headers: {
-          'authorization': jwt
-      }
-  })
-  .then(response => {
-      console.log(response.user.uuid);
-  })
-  .catch(error => {
-      console.error('Error:', error);
-  });
-}
   return (
     <>
       <div className="h-32">
