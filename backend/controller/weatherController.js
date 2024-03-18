@@ -1,6 +1,9 @@
 const axios = require("axios");
 const userModel = require("../models/user");
 
+const NodeCache = require("node-cache");
+const cache = new NodeCache({ stdTTL: 3600 });
+
 const weatherController = async (req, res) => {
   try {
     const { uuid } = req.user;
@@ -54,27 +57,37 @@ const cityController = async (req, res) => {
       cities
     );
     const id = req.params.id;
-    if (data && id < 4) {
-      const cityWeather = data.bulk;
-      const CityDetail = {
-        name: cityWeather[id].query.location.name,
-        country: cityWeather[id].query.location.country,
-        temperature: cityWeather[id].query.current.temp_c,
-        humidity: cityWeather[id].query.current.humidity,
-        condition: cityWeather[id].query.current.condition.text,
-        icon_url: cityWeather[id].query.current.condition.icon,
-      };
+    if (cache.get(data.bulk[id])) {
+      let CityDetail = cache.get(data.bulk[id]);
       res.status(200).send({
         success: true,
         message: "Got City Details",
         CityDetail,
       });
     } else {
-      res.status(404).send({
-        success: true,
-        message: "City Not Found",
-        cityWeather,
-      });
+      if (data && id < 4) {
+        const cityWeather = data.bulk;
+        const CityDetail = {
+          name: cityWeather[id].query.location.name,
+          country: cityWeather[id].query.location.country,
+          temperature: cityWeather[id].query.current.temp_c,
+          humidity: cityWeather[id].query.current.humidity,
+          condition: cityWeather[id].query.current.condition.text,
+          icon_url: cityWeather[id].query.current.condition.icon,
+        };
+        cache.set(cityWeather[id], CityDetail);
+        res.status(200).send({
+          success: true,
+          message: "Got City Details",
+          CityDetail,
+        });
+      } else {
+        res.status(404).send({
+          success: true,
+          message: "City Not Found",
+          cityWeather,
+        });
+      }
     }
   } catch (error) {
     console.log(error);
@@ -112,7 +125,7 @@ const deleteController = async (req, res) => {
     const { id } = req.params;
     if (id < 4) {
       await userModel.updateOne(
-        { uuid: uuid, [`city.${index}`]: { $exists: true } }, 
+        { uuid: uuid, [`city.${index}`]: { $exists: true } },
         { $unset: { [`city.${index}`]: 1 } }
       );
       res.status(200).json({ message: "City updated successfully" });

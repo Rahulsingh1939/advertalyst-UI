@@ -4,6 +4,7 @@ const bodyparser = require('body-parser')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const ejs = require('ejs')
+const NodeCache = require('node-cache');
 
 const app = express();
 
@@ -17,6 +18,7 @@ connectDB();
 const PORT = process.env.PORT || 3000
 const MONGODB_URL = process.env.MONGODB_URL
 
+const cache = new NodeCache({ stdTTL: 3600 }); 
 
 //Routes Import
 const healthRoute = require('./routes/healthRoute')
