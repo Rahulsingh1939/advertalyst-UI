@@ -4,11 +4,13 @@ import Card from "./Components/Card";
 import { v4 as uuidv4 } from "uuid";
 
 import axios from "axios";
+import { useWeather } from "./context/cities";
+import { useUUID } from "./context/uuid";
 
 function App() {
-  const [weather, setWeather] = useState([]);
+  const [weather, setWeather] = useWeather();
   const [loading, setLoading] = useState(false);
-  const [uuid, setUUID] = useState(localStorage.getItem("uuid") || "");
+  const [uuid, setUUID] = useUUID();
   const [jwt, setJWT] = useState("");
   const getWeather = async () => {
     try {
