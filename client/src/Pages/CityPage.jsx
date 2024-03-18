@@ -27,9 +27,7 @@ const CityPage = () => {
     <>
       <p>{city.name}</p>
       <p>{city.country}</p>
-      <p>This is Fun</p>
-      <p></p>
-      <p>This id mu</p>
+      <p>This is City Page</p>
     </>
   );
 };
