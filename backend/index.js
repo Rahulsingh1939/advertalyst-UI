@@ -21,6 +21,7 @@ const MONGODB_URL = process.env.MONGODB_URL
 //Routes Import
 const healthRoute = require('./routes/healthRoute')
 const weatherRoute = require('./routes/weatherRoute')
+const authRoute = require('./routes/authRoute')
 
 //Global MiddleWares
 app.use(bodyparser.urlencoded({extended:true}))
@@ -39,6 +40,7 @@ app.get('/',(req,res)=>{
 // ROUTES
 app.use('/api/v1/weather',weatherRoute)
 app.use('/api/health',healthRoute)
+app.use('/api/v1/auth',authRoute)
 
 
 //APP LISTENING ON PORT
