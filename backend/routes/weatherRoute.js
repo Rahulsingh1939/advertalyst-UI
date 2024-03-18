@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/',verifyJWT,weatherController)
 router.get('/:id',verifyJWT,cityController)
-router.put('/:id',cityUpdateController)
-router.delete('/:id',deleteController)
+router.put('/:id',verifyJWT,cityUpdateController)
+router.delete('/:id',verifyJWT,deleteController)
 
 module.exports = router

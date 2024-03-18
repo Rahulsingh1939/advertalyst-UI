@@ -11,7 +11,7 @@ function App() {
   const [weather, setWeather] = useWeather();
   const [loading, setLoading] = useState(false);
   const [uuid, setUUID] = useUUID();
-  const [jwt, setJWT] = useState("");
+  const [jwt, setJWT] = useState(localStorage.getItem("jwt") || "");
   const getWeather = async () => {
     try {
       setLoading(true);
@@ -60,7 +60,9 @@ function App() {
           },
         }
       );
+
       setJWT(response.data.token);
+      localStorage.setItem("jwt", response.data.token);
     } catch (error) {
       console.error("Error:", error);
     }
