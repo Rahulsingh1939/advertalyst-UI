@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Card from "./Components/Card";
+import { v4 as uuidv4 } from "uuid";
 
 import axios from "axios";
 
 function App() {
   const [weather, setWeather] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [uuid, setUUID] = useState(localStorage.getItem("uuid") || "");
+  const [jwt, setJWT] = useState("");
   const cities = {
     locations: [
       {
@@ -28,7 +31,7 @@ function App() {
     const getWeather = async () => {
       try {
         setLoading(true);
-        const {data} = await axios.post(
+        const { data } = await axios.post(
           `http://api.weatherapi.com/v1/current.json?key=${
             import.meta.env.VITE_WEATHER_API
           }&q=bulk`,
@@ -44,28 +47,48 @@ function App() {
     getWeather();
     //eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (!uuid) {
+      const generatedUUID = uuidv4();
+      setUUID(generatedUUID);
+      localStorage.setItem("uuid", generatedUUID);
+    }
+    fetchJWT();
+  }, [uuid]);
+
+  const fetchJWT = async () => {
+    try {
+      const response = await axios.post('/getJWT', { uuid }, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      setJWT(response.data.token);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   return (
     <>
       <div className="h-32">
         <p
           className="text-5xl font-bold from-stone-900 gradient-text"
-          style={{ fontFamily: "SAMAN",color:"#D9FFF8" }}
+          style={{ fontFamily: "SAMAN", color: "#D9FFF8" }}
         >
           Weather App
         </p>
       </div>
       {/* grid container */}
       {loading ? (
-        <div
-        className="text-2xl font-bold from-stone-900 ">Loading ...</div>
+        <div className="text-2xl font-bold from-stone-900 ">Loading ...</div>
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-x-10 gap-y-20 h-fit text-xl">
             {/* product cards */}
-            {weather.map((city,index)=>
-              (<Card key={index} city={city}/>)
-            )
-            }
+            {weather.map((city, index) => (
+              <Card key={index} city={city} />
+            ))}
           </div>
         </>
       )}
