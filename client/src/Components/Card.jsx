@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Card = ({ city }) => {
   const [img, setImg] = useState([]);
@@ -13,7 +13,6 @@ const Card = ({ city }) => {
             city?.query.q
           }&client_id=${import.meta.env.VITE_CLIENT_ID}`
         );
-        console.log(data);
         setImg(data?.results[0].urls?.regular);
       } catch (error) {
         console.log(error);
@@ -44,23 +43,20 @@ const Card = ({ city }) => {
             alt="Weather"
             className="h-16 w-16 m-14 mx-32 object-cover rounded-tl-md rounded-tr-md"
             style={{
-              backgroundColor: "rgba(255, 255, 255, 0.0);",
+              backgroundColor: "rgba(255, 255, 255, 0.0)",
               zIndex: "2",
               border: "1px solid rgba(255, 255, 255, 0.2)",
               borderRadius: "10px",
               boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
             }}
           />
-          <p className="lg:text-4xl text-5xl font-sans font-semibold text-gray-100 flex items-center m-20">
+          <p className="lg:text-4xl text-5xl font-sans font-semibold text-gray-100 flex items-center ">
             {Math.round(city?.query.current.temp_c)}{" "}
             <sup className="lg:text-2xl text-2xl">o </sup>
             <span className="lg:text-4xl text-4xl"> C</span>
           </p>
         </div>
-        <div className="inline">
-          {city?.query.current.condition.text}
-          
-        </div>
+        <div className="inline">{city?.query.current.condition.text}</div>
         <div className="px-3 pb-2">
           <h1 className=" text-2xl font-semibold">{city?.query.q},</h1>
           <p className="text-sm">{city?.query.location.country}</p>

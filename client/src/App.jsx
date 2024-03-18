@@ -55,20 +55,40 @@ function App() {
       localStorage.setItem("uuid", generatedUUID);
     }
     fetchJWT();
+
+    authRequest();
   }, [uuid]);
 
   const fetchJWT = async () => {
     try {
-      const response = await axios.post('/getJWT', { uuid }, {
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/auth/getJWT",
+        { uuid },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
       setJWT(response.data.token);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
+
+  const authRequest = async () => {
+    axios.get('http://localhost:3000/api/v1/auth/', {
+      headers: {
+          'authorization': jwt
+      }
+  })
+  .then(response => {
+      console.log(response.user.uuid);
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+}
   return (
     <>
       <div className="h-32">
