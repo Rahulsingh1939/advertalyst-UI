@@ -89,11 +89,8 @@ const cityController = async (req, res) => {
 const cityUpdateController = async (req, res) => {
   try {
     const { uuid } = req.user;
-    console.log(uuid);
     const { id } = req.params;
-    console.log(id);
     const newCity = req.body.city;
-    console.log(newCity);
     if (id < 4 && newCity) {
       await userModel.updateOne(
         { uuid: uuid, [`city.${id}`]: { $exists: true } },
@@ -109,7 +106,24 @@ const cityUpdateController = async (req, res) => {
   }
 };
 
-const deleteController = async (req, res) => {};
+const deleteController = async (req, res) => {
+  try {
+    const { uuid } = req.user;
+    const { id } = req.params;
+    if (id < 4) {
+      await userModel.updateOne(
+        { uuid: uuid, [`city.${index}`]: { $exists: true } }, 
+        { $unset: { [`city.${index}`]: 1 } }
+      );
+      res.status(200).json({ message: "City updated successfully" });
+    } else {
+      res.status(404).json({ error: "User not found or City does not exist" });
+    }
+  } catch (err) {
+    console.error("Error updating city:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 module.exports = {
   weatherController,
